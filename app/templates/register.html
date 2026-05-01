@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="signup-section">
+    <div class="signup-wrapper">
+        <div class="signup-left" data-aos="fade-right">
+            <div class="signup-left-content">
+                <div class="signup-logo">🍖</div>
+                <h1>Welcome to <span>FoodHeaven</span></h1>
+                <p>Join the family of food lovers who enjoy authentic Pakistani cuisine with just a click!</p>
+                <div class="features-list">
+                    <div class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Easy ordering process</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🚚</span>
+                        <span>Fast delivery in 30 mins</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">💰</span>
+                        <span>Best prices & offers</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">⭐</span>
+                        <span>4.8/5 Customer rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="signup-right" data-aos="fade-left">
+            <div class="signup-card">
+                <div class="signup-header">
+                    <h2>Create Account ✨</h2>
+                    <p>Sign up to start ordering delicious food</p>
+                </div>
+                
+                {% if error %}
+                <div class="error-alert">
+                    <span>⚠️</span> {{ error }}
+                </div>
+                {% endif %}
+                
+                <form method="POST" action="/register" id="signupForm">
+                    <div class="input-field">
+                        <label>👤 Full Name</label>
+                        <input type="text" name="name" required placeholder="Enter your full name" id="name">
+                        <div class="input-icon">😊</div>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label>📧 Email Address</label>
+                        <input type="email" name="email" required placeholder="Enter your email" id="email">
+                        <div class="input-icon">📧</div>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label>📱 Phone Number</label>
+                        <input type="tel" name="phone" required placeholder="Enter your phone number" id="phone">
+                        <div class="input-icon">📞</div>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label>🔒 Password</label>
+                        <input type="password" name="password" required placeholder="Create a strong password" id="password">
+                        <div class="input-icon">🔐</div>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label>🔒 Confirm Password</label>
+                        <input type="password" required placeholder="Confirm your password" id="confirmPassword">
+                        <div class="input-icon">✅</div>
+                    </div>
+                    
+                    <button type="submit" class="signup-btn" id="signupBtn">
+                        <span>Sign Up</span>
+                        <span class="btn-emoji">🚀</span>
+                    </button>
+                </form>
+                
+                <div class="signup-footer">
+                    <p>Already have an account? <a href="/login">Login here 🔐</a></p>
+                </div>
+                
+                <div class="terms">
+                    <p>By signing up, you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.signup-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 5%;
+}
+
+.signup-wrapper {
+    max-width: 1300px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+}
+
+.signup-left {
+    background: linear-gradient(135deg, #FFD70020, #FFD70005);
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.signup-left-content {
+    text-align: center;
+}
+
+.signup-logo {
+    font-size: 5rem;
+    animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+}
+
+.signup-left h1 {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+    line-height: 1.2;
+}
+
+.signup-left h1 span {
+    color: var(--primary);
+}
+
+.signup-left p {
+    color: #aaa;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.features-list {
+    text-align: left;
+    display: inline-block;
+}
+
+.feature {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    animation: slideIn 0.5s ease;
+    background: rgba(255,215,0,0.1);
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.feature-icon {
+    font-size: 1.3rem;
+}
+
+.signup-right {
+    padding: 3rem;
+}
+
+.signup-card {
+    width: 100%;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.signup-header h2 {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.signup-header p {
+    color: #aaa;
+    margin-top: 0.5rem;
+}
+
+.error-alert {
+    background: rgba(244, 67, 54, 0.2);
+    border: 1px solid #f44336;
+    color: #f44336;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #ddd;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 14px 45px 14px 15px;
+    background: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 15px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.input-field .input-icon {
+    position: absolute;
+    right: 15px;
+    bottom: 14px;
+    font-size: 1.2rem;
+    opacity: 0.6;
+}
+
+.signup-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    color: black;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.signup-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+}
+
+.signup-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #333;
+}
+
+.signup-footer a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-footer a:hover {
+    text-decoration: underline;
+}
+
+.terms {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.terms a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+@media (max-width: 968px) {
+    .signup-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .signup-left {
+        display: none;
+    }
+}
+
+/* Password strength indicator */
+.password-strength {
+    margin-top: 5px;
+    font-size: 0.8rem;
+}
+</style>
+
+<script>
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    
+    if (password !== confirm) {
+        e.preventDefault();
+        alert('❌ Passwords do not match! Please try again.');
+        return false;
+    }
+    
+    if (password.length < 4) {
+        e.preventDefault();
+        alert('❌ Password must be at least 4 characters long!');
+        return false;
+    }
+    
+    // Success animation
+    const btn = document.getElementById('signupBtn');
+    btn.innerHTML = '<span>Creating Account</span><span class="btn-emoji">🔄</span>';
+    btn.style.opacity = '0.7';
+});
+</script>
+{% endblock %}

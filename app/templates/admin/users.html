@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-section">
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>👥 User Management</h1>
+            <p>View and manage all registered users</p>
+        </div>
+        
+        <div class="users-table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>👤 Name</th>
+                        <th>📧 Email</th>
+                        <th>📱 Phone</th>
+                        <th>👑 Role</th>
+                        <th>📦 Orders</th>
+                        <th>📅 Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>
+                            {% if user.role == 'admin' %}
+                                <span class="role-badge admin">👑 Admin</span>
+                            {% else %}
+                                <span class="role-badge user">👤 User</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.order_count }}</td>
+                        <td>{{ user.created_at.strftime('%d/%m/%Y') if user.created_at else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="back-link">
+            <a href="/admin" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </div>
+</section>
+
+<style>
+.admin-section {
+    min-height: 100vh;
+    padding: 120px 5% 80px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.admin-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.users-table-container {
+    background: #2a2a2a;
+    border-radius: 25px;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th, .users-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.users-table th {
+    color: #FFD700;
+    font-weight: 600;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.role-badge.admin {
+    background: #FFD700;
+    color: black;
+}
+
+.role-badge.user {
+    background: #2196f3;
+    color: white;
+}
+
+.back-link {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #FFD700;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #FFD700;
+    color: black;
+}
+</style>
+{% endblock %}

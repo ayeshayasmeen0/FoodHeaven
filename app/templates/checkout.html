@@ -1,0 +1,470 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="checkout-section">
+    <div class="checkout-container" data-aos="fade-up">
+        <h1>🍽️ Checkout</h1>
+        <p class="checkout-subtitle">Complete your order to enjoy delicious food</p>
+        
+        <div class="checkout-wrapper">
+            <div class="checkout-form">
+                <div class="form-header">
+                    <h2>📋 Delivery Details</h2>
+                </div>
+                
+                <form id="checkoutForm">
+                    <div class="input-group">
+                        <label>👤 Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>📱 Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>📍 Delivery Address</label>
+                        <textarea id="address" rows="3" placeholder="Enter your complete delivery address" required></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>📝 Special Instructions (Optional)</label>
+                        <textarea id="instructions" rows="2" placeholder="Any special requests? e.g., extra spicy, no onions, etc."></textarea>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="order-summary">
+                <div class="summary-header">
+                    <h2>🛒 Order Summary</h2>
+                </div>
+                
+                <div class="order-items" id="orderItems">
+                    <!-- Items will appear here -->
+                </div>
+                
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee:</span>
+                        <span>₹50</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Packaging Fee:</span>
+                        <span>₹20</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (5%):</span>
+                        <span id="tax">₹0</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total Amount:</span>
+                        <span id="total">₹0</span>
+                    </div>
+                </div>
+                
+                <button class="place-order-btn" onclick="placeOrder()">
+                    🚀 Place Order Now
+                </button>
+                
+                <p class="secure-text">
+                    🔒 Your payment information is secure
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Modal / Popup -->
+<div id="successModal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+        <div class="modal-header">
+            <div class="success-checkmark">
+                <div class="check-icon">✓</div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <h2>🎉 Order Placed Successfully!</h2>
+            <p>Thank you for ordering from <strong>FoodHeaven</strong> 🍖</p>
+            <div class="order-details" id="orderDetails">
+                <!-- Order details will appear here -->
+            </div>
+            <div class="delivery-info">
+                <p>🚚 Estimated Delivery Time: <strong>30-45 minutes</strong></p>
+                <p>📞 For any queries: +92 300 1234567</p>
+            </div>
+            <button class="modal-btn" onclick="closeModal()">
+                Continue Shopping 🍽️
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.checkout-section {
+    min-height: 100vh;
+    padding: 120px 5% 80px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.checkout-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.checkout-container h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.checkout-subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 2rem;
+}
+
+.checkout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+}
+
+.checkout-form {
+    background: var(--gray);
+    border-radius: 25px;
+    padding: 2rem;
+}
+
+.form-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--primary);
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #ddd;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: #2a2a2a;
+    border: 2px solid #3a3a3a;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255,215,0,0.2);
+}
+
+.order-summary {
+    background: var(--gray);
+    border-radius: 25px;
+    padding: 2rem;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.summary-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--primary);
+}
+
+.order-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    animation: slideIn 0.3s ease;
+}
+
+.order-item-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-item-price {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.summary-details {
+    padding: 1rem 0;
+    border-top: 1px solid #333;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    color: #ccc;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    margin-top: 0.5rem;
+    border-top: 2px solid var(--primary);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.place-order-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.place-order-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255,215,0,0.3);
+}
+
+.secure-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--gray);
+    border-radius: 30px;
+    max-width: 500px;
+    width: 90%;
+    overflow: hidden;
+    animation: modalPop 0.5s ease;
+}
+
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    padding: 2rem;
+    text-align: center;
+}
+
+.success-checkmark {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.check-icon {
+    font-size: 3rem;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 2rem;
+    text-align: center;
+}
+
+.modal-body h2 {
+    margin-bottom: 1rem;
+}
+
+.order-details {
+    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 15px;
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.delivery-info {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255,215,0,0.1);
+    border-radius: 15px;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    background: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+}
+
+@media (max-width: 968px) {
+    .checkout-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+function loadOrderSummary() {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const orderItemsDiv = document.getElementById('orderItems');
+    
+    if (cart.length === 0) {
+        window.location.href = '/cart';
+        return;
+    }
+    
+    let subtotal = 0;
+    orderItemsDiv.innerHTML = '';
+    
+    cart.forEach((item, index) => {
+        subtotal += item.price;
+        orderItemsDiv.innerHTML += `
+            <div class="order-item">
+                <div class="order-item-name">
+                    <span>🍽️</span> ${item.name}
+                </div>
+                <div class="order-item-price">₹${item.price}</div>
+            </div>
+        `;
+    });
+    
+    const deliveryFee = 50;
+    const packagingFee = 20;
+    const tax = Math.round(subtotal * 0.05);
+    const total = subtotal + deliveryFee + packagingFee + tax;
+    
+    document.getElementById('subtotal').innerHTML = `₹${subtotal}`;
+    document.getElementById('tax').innerHTML = `₹${tax}`;
+    document.getElementById('total').innerHTML = `₹${total}`;
+}
+
+function placeOrder() {
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+    
+    if (!fullName || !email || !phone || !address) {
+        alert('❌ Please fill all required fields!');
+        return;
+    }
+    
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    let deliveryFee = 50;
+    let packagingFee = 20;
+    let tax = Math.round(subtotal * 0.05);
+    let total = subtotal + deliveryFee + packagingFee + tax;
+    
+    const orderDetails = `
+        <p><strong>Order ID:</strong> #FOOD${Math.floor(Math.random() * 10000)}</p>
+        <p><strong>Customer:</strong> ${fullName}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Delivery Address:</strong> ${address}</p>
+        <p><strong>Total Items:</strong> ${cart.length}</p>
+        <p><strong>Total Amount:</strong> ₹${total}</p>
+        <p><strong>Payment Method:</strong> Cash on Delivery</p>
+    `;
+    
+    document.getElementById('orderDetails').innerHTML = orderDetails;
+    
+    // Store order in MongoDB (simulate)
+    fetch('/api/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: fullName,
+            email: email,
+            phone: phone,
+            address: address,
+            items: cart,
+            total: total
+        })
+    }).catch(err => console.log('Order saved locally'));
+    
+    document.getElementById('successModal').style.display = 'flex';
+    
+    // Clear cart
+    localStorage.removeItem('cart');
+    updateCartCount();
+}
+
+function closeModal() {
+    document.getElementById('successModal').style.display = 'none';
+    window.location.href = '/menu';
+}
+
+loadOrderSummary();
+</script>
+{% endblock %}

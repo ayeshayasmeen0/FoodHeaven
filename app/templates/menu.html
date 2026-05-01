@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="menu-hero">
+    <div class="hero-content" data-aos="fade-up">
+        <h1>Our <span>Menu</span> 🍽️</h1>
+        <p>Discover the authentic taste of Pakistan 🇵🇰</p>
+    </div>
+</section>
+
+<section class="section">
+    <!-- Category Filters -->
+    <div class="category-filters" data-aos="fade-up">
+        <a href="/menu" class="filter-btn {% if not selected_category %}active{% endif %}">
+            All 🍛
+        </a>
+        {% for cat in categories %}
+        <a href="/menu?category={{ cat._id }}" 
+           class="filter-btn {% if selected_category == cat._id %}active{% endif %}"
+          >
+            {{ cat.icon_emoji }} {{ cat.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Dishes Grid -->
+    <div class="dishes-grid">
+        {% for dish in dishes %}
+        <div class="dish-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+            <div class="dish-badge {% if dish.is_veg %}veg{% else %}nonveg{% endif %}">
+                {% if dish.is_veg %}🥬{% else %}🍗{% endif %}
+            </div>
+            <div class="dish-img">
+                <div class="dish-emoji">🍲</div>
+            </div>
+            <div class="dish-content">
+                <h3>{{ dish.name }}</h3>
+                <p class="dish-desc">{{ dish.description[:60] }}...</p>
+                <div class="dish-footer">
+                    <span class="price">₹{{ dish.price }}</span>
+                    <button class="add-to-cart-btn" 
+                            data-id="{{ dish._id }}"
+                            data-name="{{ dish.name }}"
+                            data-price="{{ dish.price }}">
+                        🛒 Add
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.menu-hero {
+    height: 50vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 70px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-hero::before {
+    content: '🍜 🍛 🍖';
+    position: absolute;
+    font-size: 150px;
+    opacity: 0.05;
+    animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.menu-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.menu-hero h1 span {
+    color: var(--primary);
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.filter-btn {
+    padding: 10px 25px;
+    background: var(--gray);
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+}
+
+.filter-btn:hover {
+    background: var(--primary);
+    color: black;
+    transform: translateY(-3px);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: black;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.dish-card {
+    background: var(--gray);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.dish-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+}
+
+.dish-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.dish-badge.veg {
+    background: #4CAF50;
+    color: white;
+}
+
+.dish-badge.nonveg {
+    background: #f44336;
+    color: white;
+}
+
+.dish-img {
+    height: 180px;
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.dish-card:hover .dish-img {
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+}
+
+.dish-emoji {
+    font-size: 5rem;
+    transition: transform 0.3s ease;
+}
+
+.dish-card:hover .dish-emoji {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.dish-content {
+    padding: 1.5rem;
+}
+
+.dish-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dish-desc {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.add-to-cart-btn {
+    background: var(--primary);
+    color: black;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push({
+            id: this.dataset.id,
+            name: this.dataset.name,
+            price: parseInt(this.dataset.price)
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Animation effect
+        const originalText = this.innerHTML;
+        this.innerHTML = '✓ Added! 🎉';
+        this.style.background = '#4CAF50';
+        setTimeout(() => {
+            this.innerHTML = originalText;
+            this.style.background = 'var(--primary)';
+        }, 1000);
+        
+        // Update cart count
+        if (typeof updateCartCount === 'function') {
+            updateCartCount();
+        }
+    });
+});
+</script>
+{% endblock %}
