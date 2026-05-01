@@ -116,9 +116,4 @@ Made With?
 ❤️ + Python + Flask + MongoDB
 
 Author?
-Ayesha Yasmin
-
-
-
-# 8. Run
-python run.py
+Ayesha Yasmin 
